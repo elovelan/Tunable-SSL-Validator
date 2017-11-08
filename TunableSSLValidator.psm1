@@ -308,6 +308,12 @@ function Invoke-WebRequest {
     process {
         try {
             $steppablePipeline.Process($_)
+            if($PSBoundParameters.ContainsKey("SessionVariable")) { 
+                # because we're in a script block, parent scope is the module so go two levels up
+                $callerScope = 2
+                $session = Get-Variable -Name $SessionVariable -ValueOnly
+                Set-Variable -Name $SessionVariable -Value $session -Scope $callerScope
+            }
         } catch {
             throw
         }
@@ -316,12 +322,6 @@ function Invoke-WebRequest {
     end {
         try {
             $steppablePipeline.End()
-            if($PSBoundParameters.ContainsKey("SessionVariable")) { 
-                # because we're in a script block, parent scope is the module so go two levels up
-                $callerScope = 2
-                $session = Get-Variable -Name $SessionVariable -ValueOnly
-                Set-Variable -Name $SessionVariable -Value $session -Scope $callerScope
-            }
         } catch {
             throw
         }
@@ -440,6 +440,12 @@ function Invoke-RestMethod {
     process {
         try {
             $steppablePipeline.Process($_)
+            if($PSBoundParameters.ContainsKey("SessionVariable")) { 
+                # because we're in a script block, parent scope is the module so go two levels up
+                $callerScope = 2
+                $session = Get-Variable -Name $SessionVariable -ValueOnly
+                Set-Variable -Name $SessionVariable -Value $session -Scope $callerScope
+            }
         } catch {
             throw
         }
@@ -448,12 +454,6 @@ function Invoke-RestMethod {
     end {
         try {
             $steppablePipeline.End()
-            if($PSBoundParameters.ContainsKey("SessionVariable")) { 
-                # because we're in a script block, parent scope is the module so go two levels up
-                $callerScope = 2
-                $session = Get-Variable -Name $SessionVariable -ValueOnly
-                Set-Variable -Name $SessionVariable -Value $session -Scope $callerScope
-            }
         } catch {
             throw
         }
